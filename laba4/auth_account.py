@@ -311,8 +311,10 @@ class Authenticator:
 
     def add_user(self, username, password):
         if username in self.users:
+            print('This username is already taken')
             raise UsernameAlreadyExists(username)
         if len(password) < 6:
+            print('Password must consist of more than 5 symbols.')
             raise PasswordTooShort(username)
         user = User(username, password)
         self.users.update([(username, user)])
@@ -321,8 +323,10 @@ class Authenticator:
         try:
             user = self.users[username]
         except KeyError:
+            print('This username does not exist.')
             raise InvalidUsername(username)
         if not user.check_password(password):
+            print('Incorrect password.')
             raise InvalidPassword(username, user)
         user.is_logged_in = True
         return True
@@ -354,22 +358,6 @@ class InvalidUsername(AuthException):
 
 class InvalidPassword(AuthException):
     pass
-
-
-def process():
-    loop = True
-    logining = True
-    user_list = Authenticator()
-    while loop:
-        if input('do you want to  invite user(yes, no): ') == 'yes':
-            user_list.add_user(username=input('write username: '), password=input('Write password: '))
-        else:
-            loop = False
-    while logining:
-        if input('do you want to login?(yes, no): ') == 'yes':
-            user_list.login(username=input('write username: '), password=input('Write password: '))
-        else:
-            logining = False
 
 
 def adding():
